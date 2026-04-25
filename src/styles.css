@@ -819,6 +819,63 @@ textarea {
   border: 1px solid var(--surface-border);
 }
 
+/* ─── Forecast chart ────────────────────────────────────────────── */
+
+.forecast-chart-wrap {
+  display: grid;
+  gap: 12px;
+}
+
+.forecast-state-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.state-tab {
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-bg);
+  color: var(--text-chip);
+  cursor: pointer;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+}
+
+.state-tab.active {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  color: var(--accent);
+}
+
+.state-tab:hover:not(.active) {
+  border-color: var(--accent);
+}
+
+.cone-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.forecast-chart-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.forecast-chart-footer strong {
+  color: var(--text-primary);
+}
+
+.forecast-narrows {
+  color: #98ffd8;
+}
+
 /* ─── Responsive ─────────────────────────────────────────────────── */
 
 @media (max-width: 960px) {

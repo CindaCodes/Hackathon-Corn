@@ -1,13 +1,42 @@
 import type { ThemeMode } from "../hooks/useTheme";
+import type { CvResults, ForecastResults } from "../hooks/useForecast";
 import { mockDashboard } from "../mockData";
+import type { Signal } from "../mockData";
 
 interface HeroProps {
   theme: ThemeMode;
   nextTheme: ThemeMode;
   onToggleTheme: () => void;
+  cv: CvResults | null;
+  forecast: ForecastResults | null;
 }
 
-export function Hero({ theme, nextTheme, onToggleTheme }: HeroProps) {
+export function Hero({ theme, nextTheme, onToggleTheme, cv, forecast }: HeroProps) {
+  const eosRmse = cv?.eos?.rmse;
+  const metrics = mockDashboard.metrics.map((m) =>
+    m.label === "Yield model RMSE" && eosRmse !== undefined
+      ? { ...m, value: `${eosRmse.toFixed(1)} bu/ac` }
+      : m,
+  );
+
+  const iowaEos = forecast?.Iowa?.eos;
+  const signals: Signal[] = iowaEos
+    ? [
+        {
+          label: "Iowa 2025 EOS yield",
+          value: `${iowaEos.predicted_yield.toFixed(1)} bu/ac`,
+          tone: iowaEos.predicted_yield >= 170 ? "good" : "warn",
+        },
+        mockDashboard.signals[1],
+        {
+          label: "Forecast cone (EOS)",
+          value: `±${(iowaEos.cone_width / 2).toFixed(1)} bu/ac`,
+          tone: iowaEos.cone_width < 30 ? "good" : "warn",
+        },
+        mockDashboard.signals[3],
+      ]
+    : mockDashboard.signals;
+
   return (
     <section className="hero">
       <div className="hero-copy">
@@ -43,7 +72,7 @@ export function Hero({ theme, nextTheme, onToggleTheme }: HeroProps) {
         </div>
 
         <dl className="metrics-grid">
-          {mockDashboard.metrics.map((metric) => (
+          {metrics.map((metric) => (
             <div key={metric.label} className="metric-card">
               <dt>{metric.label}</dt>
               <dd>{metric.value}</dd>
@@ -55,7 +84,9 @@ export function Hero({ theme, nextTheme, onToggleTheme }: HeroProps) {
       <div className="hero-panel">
         <div className="panel-header">
           <span>{mockDashboard.project.region}</span>
-          <span className="panel-badge">Forecast ready</span>
+          <span className="panel-badge">
+            {forecast ? "Live forecast" : "Forecast ready"}
+          </span>
         </div>
 
         <div className="map-card" aria-label="Corn Belt region preview">
@@ -69,7 +100,7 @@ export function Hero({ theme, nextTheme, onToggleTheme }: HeroProps) {
         </div>
 
         <div className="signal-list">
-          {mockDashboard.signals.map((signal) => (
+          {signals.map((signal) => (
             <div key={signal.label} className="signal-row">
               <span>{signal.label}</span>
               <strong className={`signal ${signal.tone}`}>
