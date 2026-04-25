@@ -1,4 +1,3 @@
-import conePlot from "../assets/cone_plot.png";
 import choropleth from "../assets/choropleth.png";
 import shapBar from "../assets/shap_bar.png";
 import shapBeeswarm from "../assets/shap_beeswarm.png";
@@ -24,48 +23,10 @@ export function VisualizationsSection() {
         </p>
       </div>
 
-      {/* Panel A — Cone of Uncertainty */}
-      <div className="results-panel panel-cone card">
-        <div className="panel-label-row">
-          <p className="card-kicker">Panel A</p>
-          <span className="panel-badge">Quantile Regression Forest</span>
-        </div>
-        <div className="panel-img-wrap panel-img-wrap--cone">
-          <img
-            src={conePlot}
-            alt="Cone of uncertainty forecast for 5 Corn Belt states across 4 USDA checkpoints"
-            className="panel-img"
-          />
-        </div>
-        <div className="panel-cone-text">
-          <h3>Cone of Uncertainty Forecast</h3>
-          <div className="panel-cone-cols">
-            <p>
-              The USDA requires yield estimates at four specific checkpoints:
-              August 1, September 1, October 1, and End of Season (EOS). We
-              used Quantile Regression Forests (QRF) to generate a cone of
-              uncertainty for each state.
-            </p>
-            <p>
-              In August, prediction intervals are wide because most of the
-              season's weather is still unknown. As the season progresses,
-              observed weather mechanically replaces simulated scenarios,
-              causing confidence intervals to organically narrow and converge
-              on the final EOS prediction.
-            </p>
-            <ul className="panel-list">
-              <li>5 states × 4 checkpoints = 20 forecast windows</li>
-              <li>Shaded bands = 90% prediction interval</li>
-              <li>Intervals narrow as observed weather accumulates</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
       {/* Panel B — Choropleth */}
       <div className="results-panel panel-map card">
         <div className="panel-label-row">
-          <p className="card-kicker">Panel B</p>
+          <p className="card-kicker">Panel A</p>
           <span className="panel-badge">End of Season · bu/acre</span>
         </div>
         <div className="panel-map-body">
@@ -110,7 +71,7 @@ export function VisualizationsSection() {
       {/* Panel C — SHAP */}
       <div className="results-panel panel-shap card">
         <div className="panel-label-row">
-          <p className="card-kicker">Panel C</p>
+          <p className="card-kicker">Panel B</p>
           <span className="panel-badge">SHAP Explainability</span>
         </div>
         <h3 className="panel-shap-title">What Drives the Model — Feature Importance</h3>

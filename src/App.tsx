@@ -4,6 +4,7 @@ import { ProblemSection } from "./components/ProblemSection";
 import { PipelineSection } from "./components/PipelineSection";
 import { VisualizationsSection } from "./components/VisualizationsSection";
 import { MaskSection } from "./components/MaskSection";
+import { ConeSection } from "./components/ConeSection";
 
 function App() {
   const { theme, nextTheme, toggleTheme } = useTheme();
@@ -17,6 +18,7 @@ function App() {
         <PipelineSection />
         <MaskSection />
         <VisualizationsSection />
+        <ConeSection />
       </main>
     </>
   );

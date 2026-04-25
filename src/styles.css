@@ -1324,6 +1324,84 @@ textarea {
   color: var(--text-soft);
 }
 
+/* ─── Cone full-width section ────────────────────────────────────── */
+
+.cone-section {
+  margin-top: 40px;
+  padding-bottom: 16px;
+}
+
+.cone-header {
+  margin-bottom: 24px;
+}
+
+.cone-header h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.cone-lede {
+  margin: 10px 0 0;
+  max-width: 64ch;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+/* Break image out of the app-shell container to span full viewport width */
+.cone-img-bleed {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  line-height: 0;
+}
+
+.cone-img-full {
+  width: 100%;
+  display: block;
+  object-fit: contain;
+  max-height: 340px;
+}
+
+.cone-explainer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.cone-explainer-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cone-explainer-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.cone-explainer-card h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.cone-explainer-card p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.68;
+  font-size: 0.9rem;
+}
+
+.cone-explainer-card strong {
+  color: var(--text-primary);
+}
+
 /* ─── Responsive ─────────────────────────────────────────────────── */
 
 @media (max-width: 960px) {
@@ -1332,7 +1410,8 @@ textarea {
   .mask-card-body,
   .panel-cone-cols,
   .panel-map-body,
-  .shap-grid {
+  .shap-grid,
+  .cone-explainer-grid {
     grid-template-columns: 1fr;
   }
 
