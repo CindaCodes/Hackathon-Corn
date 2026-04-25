@@ -116,6 +116,33 @@
   color-scheme: light;
 }
 
+/* ─── Skip link ──────────────────────────────────────────────────── */
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 999;
+  padding: 10px 18px;
+  border-radius: 0 0 12px 12px;
+  background: var(--accent);
+  color: var(--primary-button-text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ─── Focus styles ───────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
 /* ─── Reset ──────────────────────────────────────────────────────── */
 
 *,
@@ -173,6 +200,20 @@ body {
     color var(--theme-duration) var(--theme-ease) !important;
 }
 
+/* ─── Utilities ──────────────────────────────────────────────────── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* ─── Base elements ──────────────────────────────────────────────── */
 
 /* Inherit font on all interactive elements so OS defaults don't leak in. */
@@ -194,10 +235,7 @@ textarea {
 /* ─── Hero ───────────────────────────────────────────────────────── */
 
 .hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-  gap: 24px;
-  align-items: stretch;
+  position: relative;
 }
 
 .hero-copy,
@@ -284,8 +322,15 @@ textarea {
   color: var(--text-primary);
 }
 
-.theme-toggle {
-  margin-left: auto;
+.hero-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.hero-top-row .eyebrow {
+  margin: 0;
 }
 
 .primary-button:hover,
@@ -819,75 +864,476 @@ textarea {
   border: 1px solid var(--surface-border);
 }
 
-/* ─── Forecast chart ────────────────────────────────────────────── */
+/* ─── Hero choropleth image ──────────────────────────────────────── */
 
-.forecast-chart-wrap {
+.hero-choropleth {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+  display: block;
+}
+
+.map-img-label {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.52);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+  color: rgba(235, 245, 255, 0.82);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ─── Problem section ────────────────────────────────────────────── */
+
+.problem-section {
   display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+  margin-top: 24px;
+  align-items: start;
+}
+
+.problem-text {
+  padding: 32px;
+}
+
+.problem-text h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.problem-text p {
+  margin: 14px 0 0;
+  color: var(--text-soft);
+  line-height: 1.72;
+}
+
+.problem-callouts {
+  display: grid;
+  gap: 16px;
+}
+
+.callout-card {
+  padding: 22px 24px;
+}
+
+.callout-stat {
+  display: block;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #86c8ff 0%, #6fffd5 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.callout-label {
+  margin: 8px 0 0;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+/* ─── Methodology section ────────────────────────────────────────── */
+
+.methodology-section {
+  margin-top: 40px;
+}
+
+.methodology-intro {
+  margin-bottom: 24px;
+}
+
+.methodology-intro h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.methodology-intro p {
+  margin: 10px 0 0;
+  max-width: 62ch;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+.methodology-steps {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.step-card {
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
   gap: 12px;
 }
 
-.forecast-state-tabs {
+.step-card-index {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.step-card h3 {
+  margin: 0;
+  font-size: 1.18rem;
+}
+
+.step-card-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
-.state-tab {
-  padding: 7px 13px;
-  border-radius: 999px;
+.step-card p {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.68;
+  font-size: 0.93rem;
+}
+
+/* ─── Mask section ───────────────────────────────────────────────── */
+
+.mask-section {
+  margin-top: 24px;
+}
+
+.mask-card {
+  padding: 32px;
+}
+
+.mask-card-body {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 36px;
+  align-items: start;
+}
+
+.mask-text h2 {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.mask-block {
+  margin-top: 22px;
+}
+
+.mask-block h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: var(--accent);
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.mask-block p {
+  margin: 0 0 10px;
+  color: var(--text-soft);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.mask-block p:last-child {
+  margin-bottom: 0;
+}
+
+.mask-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: sticky;
+  top: 24px;
+}
+
+.mask-img-wrap {
+  border-radius: 16px;
+  overflow: hidden;
   border: 1px solid var(--surface-border);
   background: var(--surface-bg);
-  color: var(--text-chip);
-  cursor: pointer;
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 0.72rem;
+  line-height: 0;
 }
 
-.state-tab.active {
-  background: color-mix(in srgb, var(--accent) 16%, transparent);
-  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+.mask-img {
+  width: 100%;
+  display: block;
+  image-rendering: pixelated;
+}
+
+.mask-figure figcaption {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.mask-figure figcaption code {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.85em;
+  color: var(--accent);
+  background: var(--surface-bg);
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--surface-border);
+}
+
+/* ─── Results section ────────────────────────────────────────────── */
+
+.results-section {
+  margin-top: 40px;
+  display: grid;
+  gap: 24px;
+}
+
+.results-intro {
+  margin-bottom: 4px;
+}
+
+.results-intro h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.results-intro p {
+  margin: 10px 0 0;
+  max-width: 62ch;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+.results-panel {
+  padding: 28px 30px;
+}
+
+.panel-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.panel-label-row .card-kicker {
+  margin: 0;
+}
+
+/* Panel A — Cone */
+
+.panel-img-wrap--cone {
+  margin-top: 12px;
+}
+
+.panel-cone-text {
+  margin-top: 20px;
+}
+
+.panel-cone-text h3 {
+  margin: 0 0 14px;
+  font-size: 1.35rem;
+}
+
+.panel-cone-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.panel-cone-cols p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.panel-cone-cols .panel-list {
+  margin: 0;
+}
+
+.panel-text h3 {
+  margin: 0 0 12px;
+  font-size: 1.35rem;
+}
+
+.panel-text p {
+  margin: 0 0 12px;
+  color: var(--text-soft);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.panel-text p:last-child {
+  margin-bottom: 0;
+}
+
+.panel-list {
+  margin: 12px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 6px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.panel-img-wrap {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  background: var(--surface-bg);
+  line-height: 0;
+}
+
+.panel-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Panel B — Map */
+
+.panel-map-body {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 28px;
+  align-items: start;
+  margin-top: 8px;
+}
+
+.panel-img-wrap--map .panel-img {
+  max-height: 360px;
+  object-position: center;
+}
+
+.state-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+  font-size: 0.92rem;
+}
+
+.state-table th {
+  text-align: left;
+  padding: 8px 10px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--text-chip);
+  border-bottom: 1px solid var(--surface-border);
+}
+
+.state-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--surface-border);
+  color: var(--text-soft);
+}
+
+.state-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.state-abbr {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.8rem;
   color: var(--accent);
 }
 
-.state-tab:hover:not(.active) {
-  border-color: var(--accent);
-}
-
-.cone-svg {
-  width: 100%;
-  height: auto;
-  overflow: visible;
-}
-
-.forecast-chart-footer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.state-value {
   font-family: "IBM Plex Mono", monospace;
-  font-size: 0.72rem;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.state-trend {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
   color: var(--text-muted);
 }
 
-.forecast-chart-footer strong {
-  color: var(--text-primary);
+/* Panel C — SHAP */
+
+.panel-shap-title {
+  margin: 16px 0 10px;
+  font-size: 1.35rem;
 }
 
-.forecast-narrows {
-  color: #98ffd8;
+.panel-shap-desc {
+  margin: 0 0 22px;
+  max-width: 80ch;
+  color: var(--text-soft);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.panel-shap-desc code {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.85em;
+  color: var(--accent);
+  background: var(--surface-bg);
+  padding: 1px 5px;
+  border-radius: 4px;
+  border: 1px solid var(--surface-border);
+}
+
+.shap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.shap-figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.shap-figure .panel-img {
+  border-radius: 12px;
+  border: 1px solid var(--surface-border);
+}
+
+.shap-figure figcaption {
+  font-size: 0.86rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.shap-figure figcaption strong {
+  color: var(--text-soft);
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────── */
 
 @media (max-width: 960px) {
-  .hero,
-  .content-grid,
-  .mock-grid,
-  .export-grid {
+  .problem-section,
+  .methodology-steps,
+  .mask-card-body,
+  .panel-cone-cols,
+  .panel-map-body,
+  .shap-grid {
     grid-template-columns: 1fr;
-  }
-
-  .mock-card-wide {
-    grid-column: auto;
   }
 
   .metrics-grid {
@@ -908,6 +1354,10 @@ textarea {
     padding: 20px;
   }
 
+  .results-panel {
+    padding: 20px;
+  }
+
   .metrics-grid {
     grid-template-columns: 1fr;
   }
@@ -918,9 +1368,5 @@ textarea {
 
   .hero h1 {
     font-size: clamp(2.5rem, 13vw, 4rem);
-  }
-
-  .mapping-row {
-    grid-template-columns: 1fr;
   }
 }

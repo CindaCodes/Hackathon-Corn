@@ -47,8 +47,9 @@ export function DatasetCard({
         href={mockDashboard.dataSource.url}
         target="_blank"
         rel="noreferrer"
+        aria-label="Open USDA Quick Stats result (opens in new tab)"
       >
-        Open USDA Quick Stats result
+        Open USDA Quick Stats result ↗
       </a>
 
       <div className="source-columns">
@@ -57,36 +58,6 @@ export function DatasetCard({
             {column}
           </span>
         ))}
-      </div>
-
-      <div className="import-panel">
-        <label className="upload-label" htmlFor="usda-upload">
-          Import USDA Spreadsheet Export (CSV/TSV)
-        </label>
-        <input
-          key={inputKey}
-          id="usda-upload"
-          className="upload-input"
-          type="file"
-          accept=".csv,.tsv,.txt"
-          onChange={onImport}
-        />
-
-        {importError ? (
-          <p className="import-error">{importError}</p>
-        ) : isImporting ? (
-          <p className="import-note import-note--loading">Parsing file…</p>
-        ) : importedDataset ? (
-          <p className="import-note">
-            Loaded {importedDataset.fileName} with{" "}
-            {importedDataset.rowCount.toLocaleString()} rows.
-          </p>
-        ) : (
-          <p className="import-note">
-            No local file loaded yet. Upload an exported Quick Stats file to
-            preview columns.
-          </p>
-        )}
       </div>
 
       {importedDataset && (
@@ -102,7 +73,8 @@ export function DatasetCard({
           />
 
           <div className="table-wrap">
-            <table className="preview-table">
+            <table className="preview-table" aria-label="Preview of imported dataset">
+              <caption className="sr-only">First {importedDataset.sampleRows.length} rows of uploaded CSV, showing {importedDataset.headers.slice(0, 6).length} columns</caption>
               <thead>
                 <tr>
                   {importedDataset.headers.slice(0, 6).map((header) => (

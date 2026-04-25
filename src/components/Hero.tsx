@@ -1,73 +1,53 @@
 import type { ThemeMode } from "../hooks/useTheme";
-import type { CvResults, ForecastResults } from "../hooks/useForecast";
-import { mockDashboard } from "../mockData";
-import type { Signal } from "../mockData";
 
 interface HeroProps {
   theme: ThemeMode;
   nextTheme: ThemeMode;
   onToggleTheme: () => void;
-  cv: CvResults | null;
-  forecast: ForecastResults | null;
 }
 
-export function Hero({ theme, nextTheme, onToggleTheme, cv, forecast }: HeroProps) {
-  const eosRmse = cv?.eos?.rmse;
-  const metrics = mockDashboard.metrics.map((m) =>
-    m.label === "Yield model RMSE" && eosRmse !== undefined
-      ? { ...m, value: `${eosRmse.toFixed(1)} bu/ac` }
-      : m,
-  );
+const metrics = [
+  { label: "Target states", value: "5" },
+  { label: "EOS model RMSE", value: "4.1 bu/ac" },
+  { label: "Foundation model", value: "Prithvi-100M" },
+  { label: "USDA checkpoints", value: "4" },
+];
 
-  const iowaEos = forecast?.Iowa?.eos;
-  const signals: Signal[] = iowaEos
-    ? [
-        {
-          label: "Iowa 2025 EOS yield",
-          value: `${iowaEos.predicted_yield.toFixed(1)} bu/ac`,
-          tone: iowaEos.predicted_yield >= 170 ? "good" : "warn",
-        },
-        mockDashboard.signals[1],
-        {
-          label: "Forecast cone (EOS)",
-          value: `±${(iowaEos.cone_width / 2).toFixed(1)} bu/ac`,
-          tone: iowaEos.cone_width < 30 ? "good" : "warn",
-        },
-        mockDashboard.signals[3],
-      ]
-    : mockDashboard.signals;
-
+export function Hero({ theme, nextTheme, onToggleTheme }: HeroProps) {
   return (
     <section className="hero">
       <div className="hero-copy">
-        <p className="eyebrow">USDA × NASA · 2026 Hackathon</p>
-        <h1>Corn yield forecasting from space.</h1>
-        <p className="lede">
-          A geospatial ML pipeline fusing NASA Harmonized Landsat/Sentinel-2
-          imagery with USDA NASS survey data to forecast corn-for-grain yields
-          across the Corn Belt with a cone of uncertainty.
-        </p>
-
-        <div className="project-meta">
-          <span>{mockDashboard.project.name}</span>
-          <span>{mockDashboard.project.mode}</span>
-          <span>{mockDashboard.project.updatedAt}</span>
-        </div>
-
-        <div className="hero-actions">
-          <button type="button" className="primary-button">
-            Run forecast
-          </button>
-          <button type="button" className="secondary-button">
-            View methodology
-          </button>
+        <div className="hero-top-row">
+          <p className="eyebrow">USDA × NASA · 2026 Hackathon</p>
           <button
             type="button"
-            className="secondary-button theme-toggle"
+            className="secondary-button"
             onClick={onToggleTheme}
             aria-label={`Switch to ${nextTheme} mode`}
           >
             {theme === "dark" ? "Light mode" : "Dark mode"}
+          </button>
+        </div>
+        <h1>Geospatial AI for Corn Yield Forecasting.</h1>
+        <p className="lede">
+          Bridging the gap between satellite imagery, climate data, and
+          agricultural ground truth to deliver real-time, multi-stage yield
+          predictions with a quantified cone of uncertainty.
+        </p>
+
+        <div className="project-meta">
+          <span>TerraQuant</span>
+          <span>HLS + NASS + SMAP fusion</span>
+          <span>Quantile Regression Forest</span>
+          <span>Updated Apr 24, 2026</span>
+        </div>
+
+        <div className="hero-actions">
+          <button type="button" className="primary-button">
+            View results
+          </button>
+          <button type="button" className="secondary-button">
+            Read methodology
           </button>
         </div>
 
@@ -79,36 +59,6 @@ export function Hero({ theme, nextTheme, onToggleTheme, cv, forecast }: HeroProp
             </div>
           ))}
         </dl>
-      </div>
-
-      <div className="hero-panel">
-        <div className="panel-header">
-          <span>{mockDashboard.project.region}</span>
-          <span className="panel-badge">
-            {forecast ? "Live forecast" : "Forecast ready"}
-          </span>
-        </div>
-
-        <div className="map-card" aria-label="Corn Belt region preview">
-          <div className="map-orbit map-orbit-one" />
-          <div className="map-orbit map-orbit-two" />
-          <div className="map-core">
-            <span>{mockDashboard.project.region}</span>
-            <strong>5 States</strong>
-            <span className="map-placeholder-label">IA · CO · WI · MO · NE</span>
-          </div>
-        </div>
-
-        <div className="signal-list">
-          {signals.map((signal) => (
-            <div key={signal.label} className="signal-row">
-              <span>{signal.label}</span>
-              <strong className={`signal ${signal.tone}`}>
-                {signal.value}
-              </strong>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
