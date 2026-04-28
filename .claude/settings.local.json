@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import sys; print\\(sys.executable\\)\")",
+      "Bash(pip show *)",
+      "Bash(rm -rf /Users/jacindabietz/Desktop/Hackathon/Hack_corn/venv)",
+      "Bash(python3.14 -m venv /Users/jacindabietz/Desktop/Hackathon/Hack_corn/venv)",
+      "Bash(/Users/jacindabietz/Desktop/Hackathon/Hack_corn/venv/bin/pip install *)",
+      "Bash(python3 -c \"import json; nb=json.load\\(open\\('/Users/jacindabietz/Desktop/Hackathon/Hack_corn/test1.ipynb'\\)\\); [print\\(i, ':', ''.join\\(c['source'][:200]\\)\\) for i, c in enumerate\\(nb['cells'][:5]\\)]\")",
+      "Bash(python3 -c \"import json; nb=json.load\\(open\\('/Users/jacindabietz/Desktop/Hackathon/Hack_corn/test1.ipynb'\\)\\); print\\([c['id'] for c in nb['cells'][:4]]\\)\")",
+      "Bash(python3)",
+      "Bash(python3 -c \"import json; nb=json.load\\(open\\('/Users/jacindabietz/Desktop/Hackathon/Hack_corn/test2.ipynb'\\)\\); print\\([c['id'] for c in nb['cells'][:3]]\\)\")",
+      "Bash(/Users/jacindabietz/Desktop/Hackathon/Hack_corn/venv/bin/python -c \"import earthaccess; print\\('earthaccess ok'\\)\")"
+    ]
+  }
+}
